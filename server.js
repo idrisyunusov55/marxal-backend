@@ -11,6 +11,7 @@ import SizeVillaRouter from './router/sizeVillaRoutes.js'
 import BigVillaRouter from './router/bigVillaRoutes.js'
 import AmbassadorRouter from './router/ambassadorRoutes.js'
 import RoyalRouter from './router/royalSuiteRoutes.js'
+import RoomRouter from './router/roomRoutes.js'
 import cors from 'cors'
 import { configDotenv } from 'dotenv'
 import { connectDb } from './config/config.js'
@@ -38,6 +39,8 @@ app.use('/sizevillaimg', SizeVillaRouter)
 app.use('/bigvillaimg', BigVillaRouter)
 app.use('/ambassadorsuiteimg', AmbassadorRouter)
 app.use('/royalsuiteimg', RoyalRouter)
+app.use('/room', RoomRouter)
+
 
 
 
