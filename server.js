@@ -12,9 +12,12 @@ import BigVillaRouter from './router/bigVillaRoutes.js'
 import AmbassadorRouter from './router/ambassadorRoutes.js'
 import RoyalRouter from './router/royalSuiteRoutes.js'
 import RoomRouter from './router/roomRoutes.js'
+import AuthRouter from './router/authRoutes.js'
+import UserRouter from './router/userRoutes.js'
 import cors from 'cors'
 import { configDotenv } from 'dotenv'
 import { connectDb } from './config/config.js'
+import cookieParser from 'cookie-parser'
 
 
 
@@ -24,6 +27,7 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(cors('*'))
+app.use(cookieParser())
 
 
 
@@ -40,6 +44,8 @@ app.use('/bigvillaimg', BigVillaRouter)
 app.use('/ambassadorsuiteimg', AmbassadorRouter)
 app.use('/royalsuiteimg', RoyalRouter)
 app.use('/room', RoomRouter)
+app.use('/auth', AuthRouter)
+app.use('/users', UserRouter)
 
 
 
