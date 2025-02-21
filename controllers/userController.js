@@ -9,14 +9,20 @@ export const deleteUsers = async(req, res) => {
     }
 }
 
-export const getUser = async(req, res) => {
+export const getUser = async (req, res) => {
     try {
-       const user = await userModel.findById(req.params.id)
-       res.status(200).json(user) 
+        // req.user, verifyToken middleware-dən gəlir
+        const user = await userModel.findById(req.user.id).select('-password'); // Şifrəni göndərmə
+        console.log(user.id);
+        
+        if (!user) {
+            return res.status(404).json({ error: "Istifadəçi tapılmadı." });
+        }
+        res.status(200).json(user);
     } catch (err) {
-        res.status(400).json({ error:err.message})
+        res.status(400).json({ error: err.message });
     }
-}
+};
 
 export const getUsers = async(req, res) => {
     try {
