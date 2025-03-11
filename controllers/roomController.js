@@ -92,26 +92,35 @@ const reserveRoom = async (req, res) => {
 };
 
 
-const cancelReservation = async (req, res) => {
+const deleteReservation = async (req, res) => {
     try {
-        const { id } = req.params;
-        const room = await RoomItem.findById(id);
+        const { id } = req.params; // Rezervasiyanın ID-sini alırıq
+        const reservation = await Reservation.findById(id); // Rezervasiyanı tapırıq
 
+        if (!reservation) {
+            return res.status(404).json({ error: "Rezervasiya tapılmadı!" });
+        }
+
+        // Otağı tapırıq
+        const room = await RoomItem.findById(reservation.roomId);
         if (!room) {
-            return res.status(404).json({ error: "Room tapılmadı!" });
+            return res.status(404).json({ error: "Otaq tapılmadı!" });
         }
 
-        if (!room.isReserved) {
-            return res.status(400).json({ error: "Bu otaq onsuz da rezerv edilməyib!" });
-        }
+        // Rezervasiyanı silirik
+        await Reservation.findByIdAndDelete(id);
 
+        
         room.isReserved = false;
         await room.save();
-        res.json({ message: "Rezervasiya ləğv edildi!", room });
+
+        res.json({ message: "Rezervasiya uğurla ləğv edildi!" });
+
     } catch (err) {
         res.status(400).json({ error: err.message });
     }
 };
+
 
 const getReservations = async (req, res) => {
     try {
@@ -122,7 +131,7 @@ const getReservations = async (req, res) => {
     }
 };
 
-// Müəyyən bir istifadəçinin rezervasiyalarını çıxar
+
 const getUserReservations = async (req, res) => {
     try {
         const { userId } = req.params;
@@ -135,4 +144,4 @@ const getUserReservations = async (req, res) => {
 
 
 
-export { getRooms, postRooms, deleteRoom, updateRooms, reserveRoom, cancelReservation, getReservations, getUserReservations };
+export { getRooms, postRooms, deleteRoom, updateRooms, reserveRoom, deleteReservation, getReservations, getUserReservations };

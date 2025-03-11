@@ -4,27 +4,28 @@ import {
     getRooms, 
     postRooms,  
     updateRooms, 
-    reserveRoom, 
-    cancelReservation, 
+    reserveRoom,  
     getReservations,
-    getUserReservations
+    getUserReservations,
+    deleteReservation
 } from "../controllers/roomController.js";
-import { verifyAdmin, verifyUser } from "../utils/verifyToken.js";
+
 
 const router = express.Router();
 
 router.route("/")
     .get(getRooms)
-    .post(verifyAdmin, postRooms); 
+    .post(postRooms); 
 
 router.route("/:id")
-    .delete(verifyAdmin, deleteRoom)
-    .put(verifyAdmin, updateRooms);
+    .delete( deleteRoom)
+    .put( updateRooms);
 
 router.post("/:id/reserve", reserveRoom); 
-router.post("/:id/cancel", cancelReservation); 
+router.delete("/:id/:reservationId", deleteReservation);
 
-router.get("/reservations/all", verifyAdmin, getReservations); 
+
+router.get("/reservations/all",  getReservations); 
 router.get("/reservations/:userId",  getUserReservations); 
 
 export default router;
